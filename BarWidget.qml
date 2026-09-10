@@ -59,8 +59,8 @@ BarWidget {
 
     onPressed: function(mouseButton) {
       if (mouseButton === Qt.RightButton) root.cycleIconStyle()
-      else if (mouseButton === Qt.MiddleButton || root.priceText !== "") root.refresh()
-      else root.togglePanel()
+      else if (mouseButton === Qt.MiddleButton) root.refresh()
+      else { root.refresh(); root.togglePanel() }
     }
   }
 }
