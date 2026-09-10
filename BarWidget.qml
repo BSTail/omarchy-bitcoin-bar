@@ -27,7 +27,7 @@ BarWidget {
   readonly property string label: panelLoader.item ? panelLoader.item.barLabel : "₿"
   readonly property var currentPrice: panelLoader.item ? panelLoader.item.selectedFiatPrice : null
   readonly property string priceText: currentPrice !== null && !isNaN(currentPrice) ? "$" + Math.round(currentPrice).toLocaleString(Qt.locale(), "f", 0) : ""
-  readonly property string displayLabel: priceText !== "" ? priceText : label
+  readonly property string displayLabel: priceText !== "" ? "₿ " + priceText : label
   readonly property bool stale: panelLoader.item ? panelLoader.item.stale : true
 
   implicitWidth: button.implicitWidth
