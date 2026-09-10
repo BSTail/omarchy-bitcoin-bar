@@ -25,6 +25,9 @@ BarWidget {
   readonly property bool opened: panelLoader.item ? panelLoader.item.opened === true : false
   readonly property bool popoutSwitchClosing: panelLoader.item ? panelLoader.item.popoutSwitchClosing === true : false
   readonly property string label: panelLoader.item ? panelLoader.item.barLabel : "₿"
+  readonly property var currentPrice: panelLoader.item ? panelLoader.item.selectedFiatPrice : null
+  readonly property string priceText: currentPrice !== null && !isNaN(currentPrice) ? "$" + Math.round(currentPrice).toLocaleString(Qt.locale(), "f", 0) : ""
+  readonly property string displayLabel: priceText !== "" ? priceText : label
   readonly property bool stale: panelLoader.item ? panelLoader.item.stale : true
 
   implicitWidth: button.implicitWidth
@@ -48,15 +51,15 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: root.label
-    fontSize: root.label.length > 3 ? Style.font.bodySmall : Style.bar.iconFont
-    horizontalMargin: 8.75
+    text: root.displayLabel
+    fontSize: root.priceText !== "" ? Style.font.bodySmall : (root.label.length > 3 ? Style.font.bodySmall : Style.bar.iconFont)
+    horizontalMargin: root.priceText !== "" ? 10 : 8.75
     dimmed: root.stale
     tooltipText: root.stale ? "Bitcoin data is stale — click to refresh and view" : "Bitcoin network and market data"
 
     onPressed: function(mouseButton) {
       if (mouseButton === Qt.RightButton) root.cycleIconStyle()
-      else if (mouseButton === Qt.MiddleButton) root.refresh()
+      else if (mouseButton === Qt.MiddleButton || root.priceText !== "") root.refresh()
       else root.togglePanel()
     }
   }
